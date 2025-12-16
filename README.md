@@ -65,6 +65,61 @@ pytest -q
 > Tip: Keep the package up to date. We will iterate during the competition
 > period.
 
+### 一步一步跑起来（最快路径）
+
+1. **获取代码（可选）**：
+   - 只想运行：`pip install --verbose cgshop2026-pyutils`
+   - 要修改源码：
+     ```bash
+     git clone https://github.com/CG-SHOP/pyutils26
+     cd pyutils26
+     pip install --verbose -e .
+     ```
+
+2. **安装系统依赖（Ubuntu 示例）**：
+   ```bash
+   sudo apt update
+   sudo apt install -y build-essential python3-dev
+   ```
+
+3. **验证环境**：在项目根目录运行
+   ```bash
+   pytest -q
+   ```
+   全部测试通过即表示核心功能可用。
+
+4. **运行最小示例**：保存并运行下面的脚本，看到 `Errors: None ✔` 即成功。
+   ```python
+   from cgshop2026_pyutils.schemas import CGSHOP2026Instance, CGSHOP2026Solution
+   from cgshop2026_pyutils.verify import check_for_errors
+
+   points_x = [0, 1, 0, 1]
+   points_y = [0, 0, 1, 1]
+   triangulations = [[(0, 3)], [(1, 2)]]
+
+   instance = CGSHOP2026Instance(
+       instance_uid="demo-square",
+       points_x=points_x,
+       points_y=points_y,
+       triangulations=triangulations,
+   )
+
+   solution = CGSHOP2026Solution(
+       instance_uid="demo-square",
+       flips=[
+           [[(0, 3)]],  # 翻转第一个三角剖分的对角线
+           [],          # 第二个已经是目标形态
+       ],
+   )
+
+   errors = check_for_errors(instance, solution)
+   print("Errors:", errors or "None ✔")
+   ```
+
+5. **进一步探索**：
+   - 运行并查看 `example_verification.ipynb` 了解完整验证流程。
+   - 运行 `example_zip.ipynb` 学习如何批量验证 ZIP 里的解。
+
 ---
 
 ## Quick Start
