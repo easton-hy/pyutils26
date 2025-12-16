@@ -21,8 +21,12 @@ def open_file(func: Callable[..., R]) -> Callable[..., R]:
         if isinstance(file, str):
             file = Path(file)
         if isinstance(file, Path):
-            with file.open() as f:
-                return func(f, *args, **kwargs)
+            try:
+                with file.open() as f:
+                    return func(f, *args, **kwargs)
+            except FileNotFoundError as exc:
+                msg = f"File not found: {file.resolve()}"
+                raise FileNotFoundError(msg) from exc
         return func(file, *args, **kwargs)
 
     return wrapper
